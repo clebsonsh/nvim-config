@@ -57,15 +57,9 @@ vim.keymap.set('n', '-', ':resize -5<CR>', opts)
 -- Split line with X
 vim.keymap.set('n', 'X', ':keeppatterns substitute/\\s*\\%#\\s*/\\r/e <bar> normal! ==^<cr>', opts)
 
--- Rename using LSP
-vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, { silent = true, desc = '[R]ename LSP' })
-
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', opts)
-
--- Open Quickfix list
-vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { silent = true, desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Open builtin terminal
 vim.keymap.set('n', '<leader>j', ':terminal<CR>', { silent = true, desc = 'Open terminal' })
@@ -86,4 +80,3 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Go to Definition' })
