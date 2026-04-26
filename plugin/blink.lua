@@ -2,6 +2,7 @@ vim.pack.add {
   'https://github.com/saghen/blink.lib',
   'https://github.com/saghen/blink.cmp',
   'https://github.com/L3MON4D3/LuaSnip',
+  'https://github.com/kristijanhusak/vim-dadbod-completion',
 }
 
 require('blink.cmp').setup {
@@ -20,6 +21,17 @@ require('blink.cmp').setup {
 
   sources = {
     default = { 'lsp', 'path', 'snippets' },
+    per_filetype = {
+      sql = { 'snippets', 'dadbod', 'buffer' },
+      mysql = { 'snippets', 'dadbod', 'buffer' },
+      plsql = { 'snippets', 'dadbod', 'buffer' },
+    },
+    providers = {
+      dadbod = {
+        name = 'Dadbod',
+        module = 'vim_dadbod_completion.blink',
+      },
+    },
   },
 
   snippets = { preset = 'luasnip' },

@@ -23,4 +23,14 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 
 vim.keymap.set('n', 'ca', vim.lsp.buf.code_action)
 
-vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = 'LSP Format' })
+vim.keymap.set('n', '<leader>f', function()
+  local sql_type = { 'sql', 'mysql' }
+
+  -- Format sql files with external tool (npm install -g sql-formatter)
+  if vim.tbl_contains(sql_type, vim.bo.filetype) then
+    vim.cmd '%!sql-formatter'
+    return
+  end
+
+  vim.lsp.buf.format { async = true }
+end, { desc = 'LSP Format' })
