@@ -24,10 +24,9 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'ca', vim.lsp.buf.code_action)
 
 vim.keymap.set('n', '<leader>f', function()
-  local sql_type = { 'sql', 'mysql' }
-
   -- Format sql files with external tool (npm install -g sql-formatter)
-  if vim.tbl_contains(sql_type, vim.bo.filetype) then
+  if vim.tbl_contains({ 'sql', 'mysql' }, vim.bo.filetype) then
+    vim.bo.commentstring = '-- %s'
     vim.cmd '%!sql-formatter -c ~/.config/nvim/.sql-formatter.json'
     return
   end
