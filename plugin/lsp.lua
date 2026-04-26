@@ -28,7 +28,7 @@ vim.keymap.set('n', '<leader>f', function()
 
   -- Format sql files with external tool (npm install -g sql-formatter)
   if vim.tbl_contains(sql_type, vim.bo.filetype) then
-    vim.cmd '%!sql-formatter'
+    vim.cmd '%!sql-formatter -c ~/.config/nvim/.sql-formatter.json'
     return
   end
 
