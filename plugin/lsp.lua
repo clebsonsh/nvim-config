@@ -13,6 +13,7 @@ require('mason-tool-installer').setup {
     'lua_ls',
     'stylua',
     'gopls',
+    'intelephense',
   },
 }
 
@@ -21,6 +22,8 @@ vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename)
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'Go to Implementation' })
+
 vim.keymap.set('n', 'ca', vim.lsp.buf.code_action)
 
 vim.keymap.set('n', '<leader>f', function()
@@ -28,6 +31,12 @@ vim.keymap.set('n', '<leader>f', function()
   if vim.tbl_contains({ 'sql', 'mysql' }, vim.bo.filetype) then
     vim.bo.commentstring = '-- %s'
     vim.cmd '%!sql-formatter -c ~/.config/nvim/.sql-formatter.json'
+    return
+  end
+
+  -- Format json files with external tool jq
+  if vim.tbl_contains({ 'json' }, vim.bo.filetype) then
+    vim.cmd '%!jq'
     return
   end
 

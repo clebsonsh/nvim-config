@@ -53,6 +53,9 @@ vim.o.scrolloff = 8
 -- instead raise a dialog asking if you wish to save the current file(s)
 vim.o.confirm = true
 
+-- Disable word wrap
+vim.opt.wrap = false
+
 -- [KEY MAPS]
 local opts = { noremap = true, silent = true }
 
@@ -135,6 +138,11 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Split Vertically
+vim.keymap.set('n', '<leader>v', '<C-w>v')
+-- Split Horizontally
+vim.keymap.set('n', '<leader>h', '<C-w>s')
 
 -- [AUTOCMD]
 -- Highlight when yanking (copying) text
