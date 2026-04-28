@@ -124,7 +124,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', opts)
 vim.keymap.set('n', '<leader>j', ':terminal<CR>', { silent = true, desc = 'Open terminal' })
 
 -- Exit terminal model
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', opts)
+vim.keymap.set('t', 'jj', '<C-\\><C-n>', opts)
 
 -- Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
