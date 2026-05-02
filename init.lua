@@ -142,7 +142,7 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Split Vertically
 vim.keymap.set('n', '<leader>v', '<C-w>v')
 -- Split Horizontally
-vim.keymap.set('n', '<leader>h', '<C-w>s')
+vim.keymap.set('n', '<leader>V', '<C-w>s')
 
 -- [AUTOCMD]
 -- Highlight when yanking (copying) text
