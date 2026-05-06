@@ -144,9 +144,60 @@ vim.keymap.set('n', '<leader>v', '<C-w>v')
 -- Split Horizontally
 vim.keymap.set('n', '<leader>V', '<C-w>s')
 
+-- Track the buffer and window IDs across multiple executions
+local curl_output_buf = nil
+local curl_output_win = nil
+
+vim.keymap.set('v', '<leader>rc', function()
+  local orig_win = vim.api.nvim_get_current_win()
+
+  -- 1. Yank the selection and run the command
+  vim.cmd 'normal! "vy'
+  local text = vim.fn.getreg 'v'
+
+-- Run the yanked command
+  local raw_output = vim.fn.system(text)
+
+  -- 1.5. Format the output with jq
+  -- Passing raw_output as the second argument feeds it to jq's stdin
+  local formatted_output = vim.fn.system({ 'jq', '.' }, raw_output)
+
+  -- If jq succeeds (exit code 0), use the formatted output.
+  -- Otherwise, stick to the raw output and notify the user.
+  local final_output = raw_output
+  if vim.v.shell_error == 0 then
+    final_output = formatted_output
+  else
+    vim.notify("jq formatting failed (invalid JSON or jq not installed). Showing raw output.", vim.log.levels.WARN)
+  end
+
+  local lines = vim.split(final_output, '\n', { plain = true })
+  -- 2. Create or reuse the scratch buffer
+  -- nvim_buf_is_valid checks if you previously wiped/deleted the buffer
+  if not curl_output_buf or not vim.api.nvim_buf_is_valid(curl_output_buf) then
+    curl_output_buf = vim.api.nvim_create_buf(false, true)
+    vim.bo[curl_output_buf].filetype = 'json'
+  end
+
+  -- 3. Replace the buffer's contents with the new output
+  vim.api.nvim_buf_set_lines(curl_output_buf, 0, -1, false, lines)
+
+  -- 4. Create or reuse the split window
+  -- nvim_win_is_valid checks if you manually closed the split window
+  if not curl_output_win or not vim.api.nvim_win_is_valid(curl_output_win) then
+    -- Change 'split' to 'vsplit' if you prefer a side-by-side view
+    vim.cmd 'split'
+    curl_output_win = vim.api.nvim_get_current_win()
+    vim.api.nvim_win_set_buf(curl_output_win, curl_output_buf)
+  end
+
+  -- 5. Return to the original window and re-select the text
+  vim.api.nvim_set_current_win(orig_win)
+  vim.cmd 'normal! gv'
+end, { desc = '[R]un selected [c]url' })
+
 -- [AUTOCMD]
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.hl.on_yank() end,
 })
-
